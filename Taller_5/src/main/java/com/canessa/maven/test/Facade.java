@@ -2,6 +2,8 @@ package com.canessa.maven.test;
 
 import com.canessa.maven.test.cuentas.Aspirante;
 
+import java.util.ArrayList;
+
 import com.canessa.maven.test.Empresa.Empresa;
 import com.canessa.maven.test.cuentas.Admin;
 import com.canessa.maven.test.oferta.DescripcionOferta;
@@ -11,9 +13,23 @@ import com.canessa.maven.test.oferta.TiempoOferta;
 import com.canessa.maven.test.oferta.TipoContratoOferta;
 
 public class Facade {
+    //Variables Globales
+    private static Facade miFacade;
+    private ArrayList<ArrayList> dataSesion;
+    //Singlenton
+    public static Facade getFacade() {
+        if (miFacade == null){
+            miFacade = new Facade();
+            System.out.println("Creado");
+        }else{
+            System.out.println("Existe");
+        }
+        
+        return miFacade;
+    }
     // Constructors
-    public Facade() {
-
+    private Facade() {
+        dataSesion = new ArrayList<ArrayList>();
     }
 /*
     // Metodo Main/Separador

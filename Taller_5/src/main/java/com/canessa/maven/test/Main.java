@@ -7,7 +7,7 @@ public class Main
     public static void main( String[] args )
     {
     // Creacion de Users
-        Facade controlador = new Facade();
+        Facade controlador = Facade.getFacade();
         Usuario admin = controlador.createUser(1,"Sabana", "1234");
         Usuario aspirante = controlador.createUser(2, "Andres", "1234");
     // Verificacion Login
