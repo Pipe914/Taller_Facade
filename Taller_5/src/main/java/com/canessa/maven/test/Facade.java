@@ -3,6 +3,7 @@ package com.canessa.maven.test;
 import com.canessa.maven.test.cuentas.Aspirante;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.canessa.maven.test.Empresa.Empresa;
 import com.canessa.maven.test.cuentas.Admin;
@@ -13,66 +14,78 @@ import com.canessa.maven.test.oferta.TiempoOferta;
 import com.canessa.maven.test.oferta.TipoContratoOferta;
 
 public class Facade {
-    //Variables Globales
-    private static Facade miFacade;
-    private ArrayList<ArrayList> dataSesion;
-    //Singlenton
+    // Variables Globales
+    private static Facade instance;
+    private ArrayList<Usuario> dataUsers;
+    private ArrayList<String> dataKeys;
+    private ArrayList<Empresa> dataEmpresas;
+    private ArrayList<Componente> dataOfertas;
+    private ArrayList<String> relacionador;
+
+    // Singlenton
     public static Facade getFacade() {
-        if (miFacade == null){
-            miFacade = new Facade();
-            System.out.println("Creado");
-        }else{
-            System.out.println("Existe");
+        if (instance == null) {
+            instance = new Facade();
+            System.out.println("Creado y cargado");
+        } else {
+            System.out.println("Existe y cargado");
         }
-        
-        return miFacade;
+
+        return instance;
     }
+
     // Constructors
     private Facade() {
-        dataSesion = new ArrayList<ArrayList>();
+        dataUsers = new ArrayList<Usuario>();
     }
-/*
-    // Metodo Main/Separador
-
-    public void action(String data) {
-        String[] separatedData = separator(data);
-        switch (separatedData[0]) {
-            case "1":
-                //Create User
-                Usuario user = this.createUser(Integer.parseInt(separatedData[1]), separatedData[2], separatedData[3]);
-                break;
-            case "2":
-                //Login
-                
-                break;
-            case "3":
-
-                break;
-            case "4":
-
-                break;
-            case "5":
-
-                break;
-            case "6":
-
-                break;
-            case "7":
-
-                break;
-            case "8":
-
-                break;
-            default:
-                break;
-        }
-    
-    }*/
+    /*
+     * // Metodo Main/Separador/Add data Users
+     * 
+     * public void action(String data) { String[] separatedData = separator(data);
+     * switch (separatedData[0]) { case "1": //Create User Usuario user =
+     * this.createUser(Integer.parseInt(separatedData[1]), separatedData[2],
+     * separatedData[3]); break; case "2": //Login
+     * 
+     * break; case "3":
+     * 
+     * break; case "4":
+     * 
+     * break; case "5":
+     * 
+     * break; case "6":
+     * 
+     * break; case "7":
+     * 
+     * break; case "8":
+     * 
+     * break; default: break; }
+     * 
+     * }
+     */
 
     public String[] separator(String data) {
         String[] separatedData = data.split("/");
 
         return separatedData;
+    }
+
+    private boolean verificadorKey(String key) {
+        boolean existe = false;
+        for (String localKey : dataKeys) {
+            if (localKey.equals(key)) {
+                existe = true;
+                break;
+            }
+        }
+        return existe;
+    }
+
+    // Metodos Logins
+    public void login(Usuario user, String key) {
+        dataUsers.add(user);
+        dataKeys.add(key);
+        String uData = user.getUsername() + "/" + key;
+        relacionador.add(uData);
     }
 
     // Metodos Create
@@ -91,57 +104,98 @@ public class Facade {
         }
     }
 
-    public Empresa createEmpresa(String nit, String nombre, String direccion) {
-        return new Empresa(nit, nombre, direccion);
+    public void createEmpresa(String key, String nit, String nombre, String direccion) {
+        if (verificadorKey(key)) {
+            Empresa empresa = new Empresa(nit, nombre, direccion);
+            dataEmpresas.add(empresa);
+            String uData = key + "/" + nit;
+            relacionador.add(uData);
+            System.out.println("La empresa se ha creado exitosamente");
+        } else {
+            System.out.println("La sesion no existe, ah caducado.");
+        }
     }
 
-    public Componente createOfertaBase() {
-        return new OfertaBase();
+    public void createOfertaBase(String key) {
+        if (verificadorKey(key)) {
+            Componente oferta = new OfertaBase();
+            dataOfertas.add(oferta);
+            String uData = key + "/" + dataOfertas.size() + 1;
+            relacionador.add(uData);
+            System.out.println(
+                    "La oferta base, ah sido creada correctamente. El ID de la oferta es: " + dataOfertas.size() + 1);
+        } else {
+            System.out.println("La sesion no existe, ah caducado.");
+        }
     }
 
-    public Componente createOferta(String descipcion, String tipo, String tiempo, String sueldo) {
-        return new SueldoMensualOferta(new TiempoOferta(
-                new TipoContratoOferta(new DescripcionOferta(new OfertaBase(), descipcion), tipo), tiempo), sueldo);
+    public void createOferta(String key, String descipcion, String tipo, String tiempo, String sueldo) {
+        if (verificadorKey(key)) {
+        Componente oferta =  new SueldoMensualOferta(new TiempoOferta(
+                            new TipoContratoOferta(new DescripcionOferta(new OfertaBase(), descipcion), tipo), tiempo), sueldo) ;
+        dataOfertas.add(oferta);
+        String uData = key + "/" + dataOfertas.size()+1;
+        relacionador.add(uData);
+        System.out.println("La oferta base, ah sido creada correctamente. El ID de la oferta es: " + dataOfertas.size()+1);
+    } else {
+        System.out.println("La sesion no existe, ah caducado.");
+    }
     }
 
     public void getTipoUsuario(Usuario u) {
         System.out.println(u.getTipoUsuario());
     }
 
-    // Metodos Logins
-    public void login(Usuario u, String user, String password) {
-        System.out.println(u.login(user, password));
-    }
-
     // Metodos CRUD Ofertas
 
-    public Componente addPropiedadOferta(int x, Componente oferta, String info) {
-        switch (x) {
-        case 1:
-            oferta = new DescripcionOferta(oferta, info);
-            System.out.println("Se ha añadido la propiedad correctamente");
-            return oferta;
-        case 2:
-            oferta = new TipoContratoOferta(oferta, info);
-            System.out.println("Se ha añadido la propiedad correctamente");
-            return oferta;
-        case 3:
-            oferta = new TiempoOferta(oferta, info);
-            System.out.println("Se ha añadido la propiedad correctamente");
-            return oferta;
-        case 4:
-            oferta = new SueldoMensualOferta(oferta, info);
-            System.out.println("Se ha añadido la propiedad correctamente");
-            return oferta;
-        default:
-            System.out.println("Escoja una eleccion valida");
-            return oferta;
+    public void addPropiedadOferta(int x, String key, String id, String info) {
+        if (verificadorKey(key)) {
+            for (String relacion : relacionador) {
+                String[] data = separator(relacion);
+                if (data[0].equals(key) && data[1].equals(id)) {
+                    Componente oferta = dataOfertas.get(Integer.parseInt(id) - 1);
+                    switch (x) {
+                    case 1:
+                        oferta = new DescripcionOferta(oferta, info);
+                        dataOfertas.set(Integer.parseInt(id) - 1, oferta);
+                        System.out.println("Se ha añadido la propiedad correctamente");
+
+                    case 2:
+                        oferta = new TipoContratoOferta(oferta, info);
+                        dataOfertas.set(Integer.parseInt(id) - 1, oferta);
+                        System.out.println("Se ha añadido la propiedad correctamente");
+
+                    case 3:
+                        oferta = new TiempoOferta(oferta, info);
+                        dataOfertas.set(Integer.parseInt(id) - 1, oferta);
+                        System.out.println("Se ha añadido la propiedad correctamente");
+
+                    case 4:
+                        oferta = new SueldoMensualOferta(oferta, info);
+                        dataOfertas.set(Integer.parseInt(id) - 1, oferta);
+                        System.out.println("Se ha añadido la propiedad correctamente");
+
+                    default:
+                        System.out.println("Escoja una eleccion valida");
+
+                    }
+                } else {
+                    System.out.println("La oferta no existe o no puede ser modificada por este usuario.");
+                }
+
+            }
+        } else {
+            System.out.println("La sesion no existe, ah caducado.");
         }
     }
     // Guardar ofertas/empresas
 
-    public void addEmpresa(Empresa empresa1, Componente empresa2) {
-        empresa1.addEmpresa(empresa2);
+    public void addEmpresa(String key, String nEmpresa1, String nEmpresa2) {
+        for (String relacion : relacionador) {
+            String[] data = separator(relacion);
+
+        }
+
         System.out.println("Se ha añadido la empresa correctamente");
     }
 

@@ -3,6 +3,5 @@ package com.canessa.maven.test.proxy;
 import com.canessa.maven.test.Usuario;
 
 public interface ILogin {
-    public int verifyLogin(Usuario user, String username, String password);
-    public int createKey();
+    public String verifyLogin(Usuario user, String username, String password);
 }

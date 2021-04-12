@@ -1,6 +1,7 @@
 package com.canessa.maven.test;
 
 import com.canessa.maven.test.Empresa.Empresa;
+import com.canessa.maven.test.proxy.Login;
 
 public class Main 
 {
@@ -8,11 +9,13 @@ public class Main
     {
     // Creacion de Users
         Facade controlador = Facade.getFacade();
+        Login login = Login.getLogin();
         Usuario admin = controlador.createUser(1,"Sabana", "1234");
         Usuario aspirante = controlador.createUser(2, "Andres", "1234");
-    // Verificacion Login
-        controlador.login(admin, "Sabana", "1234");
-        controlador.login(aspirante, "Andres", "1234");
+        // Verificacion Login
+        String key1 = login.verifyLogin(admin, "Sabana", "1234");
+        String key2 = login.verifyLogin(aspirante, "Andres", "1234");
+        /*    
     //Creacion empresas
         Empresa empresa1 = controlador.createEmpresa("123524", "KFC", "Calle siempre viva");
         Empresa empresa2 = controlador.createEmpresa("12689564", "PPC", "Donde vive su madre");
@@ -29,6 +32,7 @@ public class Main
     //Imprimir Ofertas
         controlador.imprimirOferta(empresa1);
 
+    }*/
     }
 }
 // Los llamados solo pueden ser por un metodos, despues se sub divide
