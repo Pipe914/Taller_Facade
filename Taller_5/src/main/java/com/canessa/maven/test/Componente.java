@@ -6,5 +6,4 @@ public interface Componente {
     
     public String imprimirOferta();
     public String optionalGetId();
-   
 }

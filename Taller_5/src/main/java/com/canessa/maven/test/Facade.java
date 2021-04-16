@@ -2,6 +2,7 @@ package com.canessa.maven.test;
 
 import com.canessa.maven.test.cuentas.Aspirante;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 
 import com.canessa.maven.test.Empresa.Empresa;
@@ -41,32 +42,46 @@ public class Facade {
         dataOfertas = new ArrayList<Componente>();
         relacionador = new ArrayList<String>();
     }
-    /*
-     * // Metodo Main/Separador/Add data Users
-     * 
-     * public void action(String data) { String[] separatedData = separator(data);
-     * switch (separatedData[0]) { case "1": //Create User Usuario user =
-     * this.createUser(Integer.parseInt(separatedData[1]), separatedData[2],
-     * separatedData[3]); break; case "2": //Login
-     * 
-     * break; case "3":
-     * 
-     * break; case "4":
-     * 
-     * break; case "5":
-     * 
-     * break; case "6":
-     * 
-     * break; case "7":
-     * 
-     * break; case "8":
-     * 
-     * break; default: break; }
-     * 
-     * }
-     */
+    // Metodo Main/Separador/Add data Users
 
-    public String[] separator(String data) {
+    public void action(String data) {
+        String[] separatedData = separator(data);
+        switch (separatedData[0]) {
+        case "1": // Crear Usuario
+            this.createUser(separatedData[1], separatedData[2], separatedData[3]);
+            break;
+        case "2": // Login
+            
+            break;
+        case "3": // Crear Empresa
+            this.createEmpresa(separatedData[1], separatedData[2], separatedData[3], separatedData[4]);
+            break;
+        case "4": // Crear Oferta Base
+            this.createOfertaBase(separatedData[1]);
+            break;
+        case "5": // Crear Oferta Completa
+            this.createOferta(separatedData[1], separatedData[2], separatedData[3], separatedData[4], separatedData[5]);
+            break;
+        case "6": // Añadir Propiedad a Oferta
+            this.addPropiedadOferta(separatedData[1], separatedData[2], separatedData[3], separatedData[4]);
+            break;
+        case "7": // Añadir Empresa
+            this.addEmpresa(separatedData[1], separatedData[2], separatedData[3]);
+            break;
+        case "8": // Añadir Oferta
+            this.addOferta(separatedData[1], separatedData[2], separatedData[3]);
+        break;
+        case "9": // Imprimir Componente
+        this.imprimirOferta(separatedData[1], separatedData[2]);
+            break;
+        default:
+            System.out.println("Opcion Incorrecta");
+            break;
+        }
+
+    }
+
+    private String[] separator(String data) {
         String[] separatedData = data.split("/");
 
         return separatedData;
@@ -91,18 +106,14 @@ public class Facade {
         relacionador.add(uData);
     }
 
-    private void logout(String key) {
-
-    }
-
     // Metodos Create
 
-    public Usuario createUser(int x, String user, String password) {
+    public Usuario createUser(String x, String user, String password) {
         switch (x) {
-        case 1:
+        case "1":
             // Crear Empresa
             return new Admin(user, password);
-        case 2:
+        case "2":
             // Crear Aspirante
             return new Aspirante(user, password);
         default:
@@ -111,7 +122,7 @@ public class Facade {
         }
     }
 
-    public void createEmpresa(String key, String nit, String nombre, String direccion) {
+    private void createEmpresa(String key, String nit, String nombre, String direccion) {
         if (verificadorKey(key)) {
             String username = "";
             Empresa empresa = new Empresa(nit, nombre, direccion);
@@ -131,7 +142,7 @@ public class Facade {
         }
     }
 
-    public void createOfertaBase(String key) {
+    private void createOfertaBase(String key) {
         if (verificadorKey(key)) {
             String username = "";
             int id = dataOfertas.size() + 1;
@@ -146,13 +157,14 @@ public class Facade {
             }
             String uData = username + "/" + id;
             relacionador.add(uData);
-            System.out.println("La oferta base, ah sido creada correctamente. El ID de la oferta es: " + oferta.optionalGetId());
+            System.out.println(
+                    "La oferta base, ah sido creada correctamente. El ID de la oferta es: " + oferta.optionalGetId());
         } else {
             System.out.println("La sesion no existe, ah caducado.");
         }
     }
 
-    public void createOferta(String key, String descipcion, String tipo, String tiempo, String sueldo) {
+    private void createOferta(String key, String descipcion, String tipo, String tiempo, String sueldo) {
         if (verificadorKey(key)) {
             String username = "";
             int id = dataOfertas.size() + 1;
@@ -175,13 +187,13 @@ public class Facade {
         }
     }
 
-    public void getTipoUsuario(Usuario u) {
+    private void getTipoUsuario(Usuario u) {
         System.out.println(u.getTipoUsuario());
     }
 
     // Metodos CRUD Ofertas
 
-    public void addPropiedadOferta(int x, String key, String id, String info) {
+    private void addPropiedadOferta(String key, String x, String id, String info) {
         if (verificadorKey(key)) {
             String username = "";
             int iD = Integer.parseInt(id) - 1;
@@ -198,22 +210,22 @@ public class Facade {
                 if (data[0].equals(username) && data[1].equals(id)) {
                     Componente oferta = dataOfertas.get(iD);
                     switch (x) {
-                    case 1:
+                    case "1":
                         oferta = new DescripcionOferta(oferta, info);
                         dataOfertas.set(iD, oferta);
                         System.out.println("Se ha añadido la propiedad correctamente");
                         break;
-                    case 2:
+                    case "2":
                         oferta = new TipoContratoOferta(oferta, info);
                         dataOfertas.set(iD, oferta);
                         System.out.println("Se ha añadido la propiedad correctamente");
                         break;
-                    case 3:
+                    case "3":
                         oferta = new TiempoOferta(oferta, info);
                         dataOfertas.set(iD, oferta);
                         System.out.println("Se ha añadido la propiedad correctamente");
                         break;
-                    case 4:
+                    case "4":
                         oferta = new SueldoMensualOferta(oferta, info);
                         dataOfertas.set(iD, oferta);
                         System.out.println("Se ha añadido la propiedad correctamente");
@@ -223,7 +235,7 @@ public class Facade {
                         break;
 
                     }
-                } 
+                }
             }
         } else {
             System.out.println("La sesion no existe, ah caducado.");
@@ -231,7 +243,7 @@ public class Facade {
     }
     // Guardar ofertas/empresas
 
-    public void addEmpresa(String key, String nEmpresa1, String nEmpresa2) {
+    private void addEmpresa(String key, String nEmpresa1, String nEmpresa2) {
         if (verificadorKey(key)) {
             // Encontrar Username
             String username = "";
@@ -280,7 +292,7 @@ public class Facade {
 
     }
 
-    public void addOferta(String key, String nEmpresa1, String id) {
+    private void addOferta(String key, String nEmpresa1, String id) {
         if (verificadorKey(key)) {
             // Encontrar Username
             String username = "";
@@ -328,7 +340,7 @@ public class Facade {
     }
 
     // Imprimir Oferta
-    public void imprimirOferta(String key, String nEmpresa) {
+    private void imprimirOferta(String key, String nEmpresa) {
         if (verificadorKey(key)) {
             // Encontrar Username
             String username = "";
