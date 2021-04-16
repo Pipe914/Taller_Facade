@@ -18,5 +18,8 @@ public class DescripcionOferta extends ModificadorOferta{
     private String addDescripcion(){
         return "\nLa descripción es: "+ this.descripcion +"\n";
     }
+    public String optionalGetId(){
+        return nuevaOferta.optionalGetId();
+    }
 
 }

@@ -18,4 +18,7 @@ public class TiempoOferta extends ModificadorOferta{
     private String addColor(){
         return "El tiempo del contrato es: " + this.tiempo + "\n";
     }
+    public String optionalGetId(){
+        return nuevaOferta.optionalGetId();
+    }
 }

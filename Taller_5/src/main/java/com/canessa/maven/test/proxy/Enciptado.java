@@ -3,7 +3,7 @@ package com.canessa.maven.test.proxy;
 public class Enciptado {
     
     public String generateKey(){
-        String key = ";"
+        String key = "";
         
         return key;
     }    

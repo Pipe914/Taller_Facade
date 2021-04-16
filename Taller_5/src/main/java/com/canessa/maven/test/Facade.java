@@ -3,7 +3,6 @@ package com.canessa.maven.test;
 import com.canessa.maven.test.cuentas.Aspirante;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.canessa.maven.test.Empresa.Empresa;
 import com.canessa.maven.test.cuentas.Admin;
@@ -37,6 +36,10 @@ public class Facade {
     // Constructors
     private Facade() {
         dataUsers = new ArrayList<Usuario>();
+        dataKeys = new ArrayList<String>();
+        dataEmpresas = new ArrayList<Empresa>();
+        dataOfertas = new ArrayList<Componente>();
+        relacionador = new ArrayList<String>();
     }
     /*
      * // Metodo Main/Separador/Add data Users
@@ -88,6 +91,10 @@ public class Facade {
         relacionador.add(uData);
     }
 
+    private void logout(String key) {
+
+    }
+
     // Metodos Create
 
     public Usuario createUser(int x, String user, String password) {
@@ -106,9 +113,17 @@ public class Facade {
 
     public void createEmpresa(String key, String nit, String nombre, String direccion) {
         if (verificadorKey(key)) {
+            String username = "";
             Empresa empresa = new Empresa(nit, nombre, direccion);
             dataEmpresas.add(empresa);
-            String uData = key + "/" + nit;
+            for (String relacion : relacionador) {
+                String[] data = separator(relacion);
+                if (data[1].equals(key)) {
+                    username = data[0];
+                    break;
+                }
+            }
+            String uData = username + "/" + nit;
             relacionador.add(uData);
             System.out.println("La empresa se ha creado exitosamente");
         } else {
@@ -118,12 +133,20 @@ public class Facade {
 
     public void createOfertaBase(String key) {
         if (verificadorKey(key)) {
-            Componente oferta = new OfertaBase();
+            String username = "";
+            int id = dataOfertas.size() + 1;
+            Componente oferta = new OfertaBase(String.valueOf(id));
             dataOfertas.add(oferta);
-            String uData = key + "/" + dataOfertas.size() + 1;
+            for (String relacion : relacionador) {
+                String[] data = separator(relacion);
+                if (data[1].equals(key)) {
+                    username = data[0];
+                    break;
+                }
+            }
+            String uData = username + "/" + id;
             relacionador.add(uData);
-            System.out.println(
-                    "La oferta base, ah sido creada correctamente. El ID de la oferta es: " + dataOfertas.size() + 1);
+            System.out.println("La oferta base, ah sido creada correctamente. El ID de la oferta es: " + oferta.optionalGetId());
         } else {
             System.out.println("La sesion no existe, ah caducado.");
         }
@@ -131,15 +154,25 @@ public class Facade {
 
     public void createOferta(String key, String descipcion, String tipo, String tiempo, String sueldo) {
         if (verificadorKey(key)) {
-        Componente oferta =  new SueldoMensualOferta(new TiempoOferta(
-                            new TipoContratoOferta(new DescripcionOferta(new OfertaBase(), descipcion), tipo), tiempo), sueldo) ;
-        dataOfertas.add(oferta);
-        String uData = key + "/" + dataOfertas.size()+1;
-        relacionador.add(uData);
-        System.out.println("La oferta base, ah sido creada correctamente. El ID de la oferta es: " + dataOfertas.size()+1);
-    } else {
-        System.out.println("La sesion no existe, ah caducado.");
-    }
+            String username = "";
+            int id = dataOfertas.size() + 1;
+            Componente oferta = new SueldoMensualOferta(new TiempoOferta(
+                    new TipoContratoOferta(new DescripcionOferta(new OfertaBase(String.valueOf(id)), descipcion), tipo),
+                    tiempo), sueldo);
+            dataOfertas.add(oferta);
+            for (String relacion : relacionador) {
+                String[] data = separator(relacion);
+                if (data[1].equals(key)) {
+                    username = data[0];
+                    break;
+                }
+            }
+            String uData = username + "/" + id;
+            relacionador.add(uData);
+            System.out.println("La oferta base, ah sido creada correctamente. El ID de la oferta es: " + oferta.optionalGetId());
+        } else {
+            System.out.println("La sesion no existe, ah caducado.");
+        }
     }
 
     public void getTipoUsuario(Usuario u) {
@@ -150,39 +183,47 @@ public class Facade {
 
     public void addPropiedadOferta(int x, String key, String id, String info) {
         if (verificadorKey(key)) {
+            String username = "";
+            int iD = Integer.parseInt(id) - 1;
             for (String relacion : relacionador) {
                 String[] data = separator(relacion);
-                if (data[0].equals(key) && data[1].equals(id)) {
-                    Componente oferta = dataOfertas.get(Integer.parseInt(id) - 1);
+                if (data[1].equals(key)) {
+                    username = data[0];
+                    break;
+                }
+            }
+
+            for (String relacion : relacionador) {
+                String[] data = separator(relacion);
+                if (data[0].equals(username) && data[1].equals(id)) {
+                    Componente oferta = dataOfertas.get(iD);
                     switch (x) {
                     case 1:
                         oferta = new DescripcionOferta(oferta, info);
-                        dataOfertas.set(Integer.parseInt(id) - 1, oferta);
+                        dataOfertas.set(iD, oferta);
                         System.out.println("Se ha añadido la propiedad correctamente");
-
+                        break;
                     case 2:
                         oferta = new TipoContratoOferta(oferta, info);
-                        dataOfertas.set(Integer.parseInt(id) - 1, oferta);
+                        dataOfertas.set(iD, oferta);
                         System.out.println("Se ha añadido la propiedad correctamente");
-
+                        break;
                     case 3:
                         oferta = new TiempoOferta(oferta, info);
-                        dataOfertas.set(Integer.parseInt(id) - 1, oferta);
+                        dataOfertas.set(iD, oferta);
                         System.out.println("Se ha añadido la propiedad correctamente");
-
+                        break;
                     case 4:
                         oferta = new SueldoMensualOferta(oferta, info);
-                        dataOfertas.set(Integer.parseInt(id) - 1, oferta);
+                        dataOfertas.set(iD, oferta);
                         System.out.println("Se ha añadido la propiedad correctamente");
-
+                        break;
                     default:
                         System.out.println("Escoja una eleccion valida");
+                        break;
 
                     }
-                } else {
-                    System.out.println("La oferta no existe o no puede ser modificada por este usuario.");
-                }
-
+                } 
             }
         } else {
             System.out.println("La sesion no existe, ah caducado.");
@@ -191,22 +232,135 @@ public class Facade {
     // Guardar ofertas/empresas
 
     public void addEmpresa(String key, String nEmpresa1, String nEmpresa2) {
-        for (String relacion : relacionador) {
-            String[] data = separator(relacion);
+        if (verificadorKey(key)) {
+            // Encontrar Username
+            String username = "";
+            Empresa empresa1 = null;
+            Empresa empresa2 = null;
+            for (String relacion : relacionador) {
+                String[] data = separator(relacion);
+                if (data[1].equals(key)) {
+                    username = data[0];
+                    break;
+                }
+            }
+            // Encontrar empresa relacionada con username si se encontro el usuario
+            if (!username.equals("")) {
+                for (String relacion : relacionador) {
+                    String[] data = separator(relacion);
+                    if (data[0].equals(username) && data[1].equals(nEmpresa1)) {
+                        for (Empresa empresa : dataEmpresas) {
+                            if (empresa.getNit().equals(nEmpresa1)) {
+                                empresa1 = empresa;
+                                break;
+                            }
+                        }
+                        for (Empresa empresa : dataEmpresas) {
+                            if (empresa.getNit().equals(nEmpresa2)) {
+                                empresa2 = empresa;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (empresa1 != null && empresa2 != null) {
+                    empresa1.addEmpresa(empresa2);
+                    System.out.println("Se ha añadido la empresa correctamente");
+                } else {
+                    System.out.println(
+                            "La informacion de las empresas que ha ingresado no se encuentra registrada. Intente nuevamente");
+                }
+            } else {
+                System.out.println("El usuario no esta registrado en el sistema");
+            }
 
+        } else {
+            System.out.println("La sesion no existe, ah caducado.");
         }
 
-        System.out.println("Se ha añadido la empresa correctamente");
     }
 
-    public void addOferta(Empresa empresa, Componente oferta) {
-        empresa.addOfertaLaboral(oferta);
-        System.out.println("Se ha añadido la oferta correctamente");
+    public void addOferta(String key, String nEmpresa1, String id) {
+        if (verificadorKey(key)) {
+            // Encontrar Username
+            String username = "";
+            Empresa empresa1 = null;
+            Componente oferta1 = null;
+            for (String relacion : relacionador) {
+                String[] data = separator(relacion);
+                if (data[1].equals(key)) {
+                    username = data[0];
+                    break;
+                }
+            }
+            // Encontrar empresa relacionada con username si se encontro el usuario
+            if (!username.equals("")) {
+                for (String relacion : relacionador) {
+                    String[] data = separator(relacion);
+                    if (data[0].equals(username) && data[1].equals(nEmpresa1)) {
+                        for (Empresa empresa : dataEmpresas) {
+                            if (empresa.getNit().equals(nEmpresa1)) {
+                                empresa1 = empresa;
+                                break;
+                            }
+                        }
+                        for (Componente oferta : dataOfertas) {
+                            if (oferta.optionalGetId().equals(id)) {
+                                oferta1 = oferta;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (empresa1 != null && oferta1 != null) {
+                    empresa1.addOfertaLaboral(oferta1);
+                    System.out.println("Se ha añadido la oferta correctamente");
+                } else {
+                    System.out.println(
+                            "La informacion de las empresas que ha ingresado no se encuentra registrada. Intente nuevamente");
+                }
+            } else {
+                System.out.println("El usuario no esta registrado en el sistema");
+            }
+        } else {
+            System.out.println("La sesion no existe, ah caducado.");
+        }
     }
 
     // Imprimir Oferta
-    public void imprimirOferta(Componente c) {
-        System.out.println(c.imprimirOferta());
+    public void imprimirOferta(String key, String nEmpresa) {
+        if (verificadorKey(key)) {
+            // Encontrar Username
+            String username = "";
+            Empresa empresa1 = null;
+            for (String relacion : relacionador) {
+                String[] data = separator(relacion);
+                if (data[1].equals(key)) {
+                    username = data[0];
+                }
+            }
+            if (!username.equals("")) {
+                for (String relacion : relacionador) {
+                    String[] data = separator(relacion);
+                    if (data[0].equals(username) && data[1].equals(nEmpresa)) {
+                        for (Empresa empresa : dataEmpresas) {
+                            if (empresa.getNit().equals(nEmpresa)) {
+                                empresa1 = empresa;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (empresa1 != null) {
+                    System.out.println(empresa1.imprimirOferta());
+                } else {
+                    System.out.println("La empresa no se encuentra registrada.");
+                }
+            } else {
+                System.out.println("El usuario no esta registrado en el sistema");
+            }
+        } else {
+            System.out.println("La sesion no existe, ah caducado.");
+        }
     }
-
 }

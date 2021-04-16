@@ -13,4 +13,7 @@ public abstract class ModificadorOferta implements Componente{
     public String imprimirOferta(){
         return nuevaOferta.imprimirOferta();
     }
+    public String optionalGetId(){
+        return nuevaOferta.optionalGetId();
+    }
 }

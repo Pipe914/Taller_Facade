@@ -18,5 +18,8 @@ public class TipoContratoOferta extends ModificadorOferta{
     private String addTipoContrato(){
         return "El tipo de contrato es: " + this.tipoContrato + "\n";
     }
+    public String optionalGetId(){
+        return nuevaOferta.optionalGetId();
+    }
     
 }

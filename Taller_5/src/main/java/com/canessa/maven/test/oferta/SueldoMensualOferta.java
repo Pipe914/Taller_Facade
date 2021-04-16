@@ -18,5 +18,8 @@ public class SueldoMensualOferta extends ModificadorOferta{
     private String addSueldo(){
         return "El sueldo mensual del contrato es: " + this.sueldo + "\n";
     }
+    public String optionalGetId(){
+        return nuevaOferta.optionalGetId();
+    }
     
 }

@@ -47,6 +47,9 @@ public class Empresa implements Componente {
 
         return data;
     }
+    public String optionalGetId(){
+        return "";
+    }
     
     public void addOfertaLaboral(Componente oferta) {
         this.ofertasLaborales.add(oferta);
@@ -97,5 +100,6 @@ public class Empresa implements Componente {
     public ArrayList<Componente> getEmpresas() {
         return this.empresas;
     }
+
 
 }
