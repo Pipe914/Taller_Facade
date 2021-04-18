@@ -1,6 +1,7 @@
 package com.canessa.maven.test;
 
 import com.canessa.maven.test.proxy.Login;
+import com.canessa.maven.test.proxy.AESEncript;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,8 +29,22 @@ public class Main {
         controlador.action("8/"+key1+"/12689564/2");
         // Imprimir Ofertas
         controlador.action("9/"+key1+"/123524");
-
+        
+        
+        System.out.println("PRUEBAS DE ENCRIPTAMIENTO");
+ //BfNFPRgfKF8Ke9kpoNAagmcI4/Hya5o/rq9/fq97ZiA=
+ //792MS+l8otkZzOufWU/hUA=
+    String userlogiando=(controlador.createUser("2", "Saba", "1234")).toString();
+    String encryptedString = AESEncript.encrypt(userlogiando);
+    String decryptedString = AESEncript.decrypt(encryptedString);
+ 
+    System.out.println(userlogiando);
+    System.out.println(encryptedString);
+    System.out.println(decryptedString);
+  
+   
     }
+    
 }
 
 // Los llamados solo pueden ser por un metodos, despues se sub divide
