@@ -12,16 +12,15 @@ public class Main {
         // Verificacion Login
         String key1 = proxy.verifyLogin(admin, "Sabana", "1234");
         String key2 = proxy.verifyLogin(aspirante, "Andres", "1234");
-
         // Creacion empresas
         controlador.action("3/"+key1+"/123524/KFC/Calle siempre viva");
         controlador.action("3/"+key1+"/12689564/PPC/Donde vive su madre");
         // Creacion oferta
-        // Full
-        controlador.action("5/"+key1+"/Trabajo/Servicios/Indefinido/500000");
-        // Base + Propiedades
-        controlador.action("4/"+key1);
-        controlador.action("6/"+key1+"/1/2/Muchas cosas wuu!!");
+            // Full
+            controlador.action("5/"+key1+"/Trabajo/Servicios/Indefinido/500000");
+            // Base + Propiedades
+            controlador.action("4/"+key1);
+            controlador.action("6/"+key1+"/1/2/Muchas cosas wuu!!");
         // Guardar Empresa/Oferta
         controlador.action("7/"+key1+"/123524/12689564");
         controlador.action("8/"+key1+"/123524/1");
@@ -32,6 +31,11 @@ public class Main {
     }
 }
 
-// Los llamados solo pueden ser por un metodos, despues se sub divide
 // Encriptado de key y llamados
 // Verificar funciones a las que es posible acceder cada usuario
+// Implementar Fly
+/*  1. Terminar DIseño (UML) V-E
+    2. Terminanr funcionalidad completa y presentar funcionalidad
+    3. Terminar pruebas para todos los metodos
+    4. Cambiar username por ID
+*/

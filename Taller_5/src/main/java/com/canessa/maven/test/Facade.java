@@ -2,7 +2,6 @@ package com.canessa.maven.test;
 
 import com.canessa.maven.test.cuentas.Aspirante;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 
 import com.canessa.maven.test.Empresa.Empresa;
@@ -50,8 +49,8 @@ public class Facade {
         case "1": // Crear Usuario
             this.createUser(separatedData[1], separatedData[2], separatedData[3]);
             break;
-        case "2": // Login
-            
+        case "2": // LogOut
+            this.logOut(separatedData[1]);
             break;
         case "3": // Crear Empresa
             this.createEmpresa(separatedData[1], separatedData[2], separatedData[3], separatedData[4]);
@@ -78,7 +77,6 @@ public class Facade {
             System.out.println("Opcion Incorrecta");
             break;
         }
-
     }
 
     private String[] separator(String data) {
@@ -104,6 +102,12 @@ public class Facade {
         dataKeys.add(key);
         String uData = user.getUsername() + "/" + key;
         relacionador.add(uData);
+    }
+
+    private void logOut(String key){
+        if (verificadorKey(key)) {
+            
+        }
     }
 
     // Metodos Create
@@ -279,8 +283,7 @@ public class Facade {
                     empresa1.addEmpresa(empresa2);
                     System.out.println("Se ha añadido la empresa correctamente");
                 } else {
-                    System.out.println(
-                            "La informacion de las empresas que ha ingresado no se encuentra registrada. Intente nuevamente");
+                    System.out.println("La informacion de las empresas que ha ingresado no se encuentra registrada. Intente nuevamente");
                 }
             } else {
                 System.out.println("El usuario no esta registrado en el sistema");

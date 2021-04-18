@@ -12,10 +12,10 @@ public class TiempoOferta extends ModificadorOferta{
     }
 
     public String imprimirOferta(){
-        return nuevaOferta.imprimirOferta() + addColor();
+        return nuevaOferta.imprimirOferta() + addTiempoOferta();
     }
 
-    private String addColor(){
+    private String addTiempoOferta(){
         return "El tiempo del contrato es: " + this.tiempo + "\n";
     }
     public String optionalGetId(){
