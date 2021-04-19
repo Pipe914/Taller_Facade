@@ -21,27 +21,14 @@ public class Main {
             // Full
             controlador.action(AESEncript.encrypt("5/"+key1+"/Trabajo/Servicios/Indefinido/500000"));
             // Base + Propiedades
-            controlador.action("4/"+key1);
-            controlador.action("6/"+key1+"/1/2/Muchas cosas wuu!!");
+            controlador.action(AESEncript.encrypt("4/"+key1));
+            controlador.action(AESEncript.encrypt("6/"+key1+"/1/2/Muchas cosas wuu!!"));
         // Guardar Empresa/Oferta
-        controlador.action("7/"+key1+"/123524/12689564");
-        controlador.action("8/"+key1+"/123524/1");
-        controlador.action("8/"+key1+"/12689564/2");
+        controlador.action(AESEncript.encrypt("7/"+key1+"/123524/12689564"));
+        controlador.action(AESEncript.encrypt("8/"+key1+"/123524/1"));
+        controlador.action(AESEncript.encrypt("8/"+key1+"/12689564/2"));
         // Imprimir Ofertas
-        controlador.action("9/"+key1+"/123524");
-        
-        
-        System.out.println("PRUEBAS DE ENCRIPTAMIENTO");
- //BfNFPRgfKF8Ke9kpoNAagmcI4/Hya5o/rq9/fq97ZiA=
- //792MS+l8otkZzOufWU/hUA=
-    String userlogiando=(controlador.createUser("2", "Saba", "1234")).toString();
-    String encryptedString = AESEncript.encrypt(userlogiando);
-    String decryptedString = AESEncript.decrypt(encryptedString);
- 
-    System.out.println(userlogiando);
-    System.out.println(encryptedString);
-    System.out.println(decryptedString);
-  
+        controlador.action(AESEncript.encrypt("9/"+key1+"/123524"));
    
     }
     

@@ -92,7 +92,8 @@ public class Facade {
     private boolean verificadorKey(String key) {
         boolean existe = false;
         for (String localKey : dataKeys) {
-            if (localKey.equals(key)) {
+            String localKeySinAES = AESEncript.decrypt(localKey);
+            if (localKeySinAES.equals(key)) {
                 existe = true;
                 break;
             }
@@ -103,8 +104,8 @@ public class Facade {
     // Metodos Logins
     public void login(Usuario user, String key) {
         dataUsers.add(user);
-        dataKeys.add(key);
-        String uData = user.getUsername() + "/" + key;
+        dataKeys.add(AESEncript.encrypt(key));
+        String uData =AESEncript.encrypt(user.getUsername() + "/" + key);
         relacionador.add(uData);
     }
 
@@ -136,14 +137,14 @@ public class Facade {
             Empresa empresa = new Empresa(nit, nombre, direccion);
             dataEmpresas.add(empresa);
             for (String relacion : relacionador) {
-                String[] data = separator(relacion);
+                String[] data = separator(AESEncript.decrypt(relacion));
                 if (data[1].equals(key)) {
                     username = data[0];
                     break;
                 }
             }
             String uData = username + "/" + nit;
-            relacionador.add(uData);
+            relacionador.add(AESEncript.encrypt(uData));
             System.out.println("La empresa se ha creado exitosamente");
         } else {
             System.out.println("La sesion no existe, ah caducado.");
@@ -157,14 +158,14 @@ public class Facade {
             Componente oferta = new OfertaBase(String.valueOf(id));
             dataOfertas.add(oferta);
             for (String relacion : relacionador) {
-                String[] data = separator(relacion);
+                String[] data = separator(AESEncript.decrypt(relacion));
                 if (data[1].equals(key)) {
                     username = data[0];
                     break;
                 }
             }
             String uData = username + "/" + id;
-            relacionador.add(uData);
+            relacionador.add(AESEncript.encrypt(uData));
             System.out.println(
                     "La oferta base, ah sido creada correctamente. El ID de la oferta es: " + oferta.optionalGetId());
         } else {
@@ -181,14 +182,14 @@ public class Facade {
                     tiempo), sueldo);
             dataOfertas.add(oferta);
             for (String relacion : relacionador) {
-                String[] data = separator(relacion);
+                String[] data = separator(AESEncript.decrypt(relacion));
                 if (data[1].equals(key)) {
                     username = data[0];
                     break;
                 }
             }
             String uData = username + "/" + id;
-            relacionador.add(uData);
+            relacionador.add(AESEncript.encrypt(uData));
             System.out.println("La oferta base, ah sido creada correctamente. El ID de la oferta es: " + oferta.optionalGetId());
         } else {
             System.out.println("La sesion no existe, ah caducado.");
@@ -206,7 +207,7 @@ public class Facade {
             String username = "";
             int iD = Integer.parseInt(id) - 1;
             for (String relacion : relacionador) {
-                String[] data = separator(relacion);
+                String[] data = separator(AESEncript.decrypt(relacion));
                 if (data[1].equals(key)) {
                     username = data[0];
                     break;
@@ -214,7 +215,7 @@ public class Facade {
             }
 
             for (String relacion : relacionador) {
-                String[] data = separator(relacion);
+                String[] data = separator(AESEncript.decrypt(relacion));
                 if (data[0].equals(username) && data[1].equals(id)) {
                     Componente oferta = dataOfertas.get(iD);
                     switch (x) {
@@ -258,7 +259,7 @@ public class Facade {
             Empresa empresa1 = null;
             Empresa empresa2 = null;
             for (String relacion : relacionador) {
-                String[] data = separator(relacion);
+                String[] data = separator(AESEncript.decrypt(relacion));
                 if (data[1].equals(key)) {
                     username = data[0];
                     break;
@@ -267,7 +268,7 @@ public class Facade {
             // Encontrar empresa relacionada con username si se encontro el usuario
             if (!username.equals("")) {
                 for (String relacion : relacionador) {
-                    String[] data = separator(relacion);
+                    String[] data = separator(AESEncript.decrypt(relacion));
                     if (data[0].equals(username) && data[1].equals(nEmpresa1)) {
                         for (Empresa empresa : dataEmpresas) {
                             if (empresa.getNit().equals(nEmpresa1)) {
@@ -306,7 +307,7 @@ public class Facade {
             Empresa empresa1 = null;
             Componente oferta1 = null;
             for (String relacion : relacionador) {
-                String[] data = separator(relacion);
+                String[] data = separator(AESEncript.decrypt(relacion));
                 if (data[1].equals(key)) {
                     username = data[0];
                     break;
@@ -315,7 +316,7 @@ public class Facade {
             // Encontrar empresa relacionada con username si se encontro el usuario
             if (!username.equals("")) {
                 for (String relacion : relacionador) {
-                    String[] data = separator(relacion);
+                    String[] data = separator(AESEncript.decrypt(relacion));
                     if (data[0].equals(username) && data[1].equals(nEmpresa1)) {
                         for (Empresa empresa : dataEmpresas) {
                             if (empresa.getNit().equals(nEmpresa1)) {
@@ -353,14 +354,14 @@ public class Facade {
             String username = "";
             Empresa empresa1 = null;
             for (String relacion : relacionador) {
-                String[] data = separator(relacion);
+                String[] data = separator(AESEncript.decrypt(relacion));
                 if (data[1].equals(key)) {
                     username = data[0];
                 }
             }
             if (!username.equals("")) {
                 for (String relacion : relacionador) {
-                    String[] data = separator(relacion);
+                    String[] data = separator(AESEncript.decrypt(relacion));
                     if (data[0].equals(username) && data[1].equals(nEmpresa)) {
                         for (Empresa empresa : dataEmpresas) {
                             if (empresa.getNit().equals(nEmpresa)) {
