@@ -11,6 +11,7 @@ import com.canessa.maven.test.oferta.OfertaBase;
 import com.canessa.maven.test.oferta.SueldoMensualOferta;
 import com.canessa.maven.test.oferta.TiempoOferta;
 import com.canessa.maven.test.oferta.TipoContratoOferta;
+import com.canessa.maven.test.proxy.AESEncript;
 
 public class Facade {
     // Variables Globales
@@ -44,7 +45,10 @@ public class Facade {
     // Metodo Main/Separador/Add data Users
 
     public void action(String data) {
-        String[] separatedData = separator(data);
+        System.out.println(data);
+        String dataUncripted = AESEncript.decrypt(data);
+        System.out.println(dataUncripted);
+        String[] separatedData = separator(dataUncripted);
         switch (separatedData[0]) {
         case "1": // Crear Usuario
             this.createUser(separatedData[1], separatedData[2], separatedData[3]);
