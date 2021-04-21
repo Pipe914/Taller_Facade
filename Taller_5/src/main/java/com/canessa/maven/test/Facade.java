@@ -44,42 +44,31 @@ public class Facade {
     }
     // Metodo Main/Separador/Add data Users
 
-    public void action(String data) {
-        System.out.println(data);
+    public String action(String data) {
         String dataUncripted = AESEncript.decrypt(data);
-        System.out.println(dataUncripted);
         String[] separatedData = separator(dataUncripted);
         switch (separatedData[0]) {
         case "1": // Crear Usuario
             this.createUser(separatedData[1], separatedData[2], separatedData[3]);
-            break;
+            return AESEncript.encrypt("User creado.");
         case "2": // LogOut
-            this.logOut(separatedData[1]);
-            break;
+            return AESEncript.encrypt(this.logOut(separatedData[1]));
         case "3": // Crear Empresa
-            this.createEmpresa(separatedData[1], separatedData[2], separatedData[3], separatedData[4]);
-            break;
+            return AESEncript.encrypt(this.createEmpresa(separatedData[1], separatedData[2], separatedData[3], separatedData[4]));
         case "4": // Crear Oferta Base
-            this.createOfertaBase(separatedData[1]);
-            break;
+            return AESEncript.encrypt(this.createOfertaBase(separatedData[1]));
         case "5": // Crear Oferta Completa
-            this.createOferta(separatedData[1], separatedData[2], separatedData[3], separatedData[4], separatedData[5]);
-            break;
+            return AESEncript.encrypt(this.createOferta(separatedData[1], separatedData[2], separatedData[3], separatedData[4], separatedData[5]));
         case "6": // Añadir Propiedad a Oferta
-            this.addPropiedadOferta(separatedData[1], separatedData[2], separatedData[3], separatedData[4]);
-            break;
+            return AESEncript.encrypt(this.addPropiedadOferta(separatedData[1], separatedData[2], separatedData[3], separatedData[4]));
         case "7": // Añadir Empresa
-            this.addEmpresa(separatedData[1], separatedData[2], separatedData[3]);
-            break;
+            return AESEncript.encrypt(this.addEmpresa(separatedData[1], separatedData[2], separatedData[3]));
         case "8": // Añadir Oferta
-            this.addOferta(separatedData[1], separatedData[2], separatedData[3]);
-        break;
+            return AESEncript.encrypt(this.addOferta(separatedData[1], separatedData[2], separatedData[3]));
         case "9": // Imprimir Componente
-        this.imprimirOferta(separatedData[1], separatedData[2]);
-            break;
+            return AESEncript.encrypt(this.imprimirOferta(separatedData[1], separatedData[2]));
         default:
-            System.out.println("Opcion Incorrecta");
-            break;
+            return "Opcion Incorrecta";
         }
     }
 
@@ -109,10 +98,48 @@ public class Facade {
         relacionador.add(uData);
     }
 
-    private void logOut(String key){
+    private String logOut(String key){
+        String response = "";
         if (verificadorKey(key)) {
-            
+            String username = "";
+            boolean delete = false;
+            boolean complete = false;
+            for (String relacion : relacionador) {
+                String[] data = separator(AESEncript.decrypt(relacion));
+                if (data[1].equals(key)) {
+                    username = data[0];
+                    int index = relacionador.indexOf(relacion);
+                    relacionador.remove(index);
+                    delete = true;
+                    break;
+                }
+            }
+            if(delete){
+                for(String k : dataKeys){
+                    String dk = AESEncript.decrypt(k);
+                    if (dk.equals(key)) {
+                        int index = dataKeys.indexOf(k);
+                        dataKeys.remove(index);
+                        break;
+                    }
+                }
+                for (Usuario user : dataUsers){
+                    if(user.getUsername().equals(username)){
+                        int index = dataUsers.indexOf(user);
+                        dataUsers.remove(index);
+                        complete = true;
+                        break;
+                        
+                    }
+                }
+            }
+            if(complete){
+                response = "Su sesion ha sido cerrada correctamente, vuelva pronto";
+            }else{
+                response = "No se ha podido cerrar la sesion. Intente nuevamente";
+            }
         }
+        return response;
     }
 
     // Metodos Create
@@ -131,7 +158,8 @@ public class Facade {
         }
     }
 
-    private void createEmpresa(String key, String nit, String nombre, String direccion) {
+    private String createEmpresa(String key, String nit, String nombre, String direccion) {
+        String response = "";
         if (verificadorKey(key)) {
             String username = "";
             Empresa empresa = new Empresa(nit, nombre, direccion);
@@ -145,13 +173,15 @@ public class Facade {
             }
             String uData = username + "/" + nit;
             relacionador.add(AESEncript.encrypt(uData));
-            System.out.println("La empresa se ha creado exitosamente");
+            response = "La empresa se ha creado exitosamente";
         } else {
-            System.out.println("La sesion no existe, ah caducado.");
+            response = "La sesion no existe, ah caducado.";
         }
+        return response;
     }
 
-    private void createOfertaBase(String key) {
+    private String createOfertaBase(String key) {
+        String response = "";
         if (verificadorKey(key)) {
             String username = "";
             int id = dataOfertas.size() + 1;
@@ -166,14 +196,15 @@ public class Facade {
             }
             String uData = username + "/" + id;
             relacionador.add(AESEncript.encrypt(uData));
-            System.out.println(
-                    "La oferta base, ah sido creada correctamente. El ID de la oferta es: " + oferta.optionalGetId());
+            response = "La oferta base, ah sido creada correctamente. El ID de la oferta es: " + oferta.optionalGetId();
         } else {
-            System.out.println("La sesion no existe, ah caducado.");
+            response = "La sesion no existe, ah caducado.";
         }
+        return response;
     }
 
-    private void createOferta(String key, String descipcion, String tipo, String tiempo, String sueldo) {
+    private String  createOferta(String key, String descipcion, String tipo, String tiempo, String sueldo) {
+        String response = "";
         if (verificadorKey(key)) {
             String username = "";
             int id = dataOfertas.size() + 1;
@@ -190,10 +221,11 @@ public class Facade {
             }
             String uData = username + "/" + id;
             relacionador.add(AESEncript.encrypt(uData));
-            System.out.println("La oferta base, ah sido creada correctamente. El ID de la oferta es: " + oferta.optionalGetId());
+            response = "La oferta base, ah sido creada correctamente. El ID de la oferta es: " + oferta.optionalGetId();
         } else {
-            System.out.println("La sesion no existe, ah caducado.");
+            response = "La sesion no existe, ah caducado.";
         }
+        return response;
     }
 
     private void getTipoUsuario(Usuario u) {
@@ -202,7 +234,8 @@ public class Facade {
 
     // Metodos CRUD Ofertas
 
-    private void addPropiedadOferta(String key, String x, String id, String info) {
+    private String addPropiedadOferta(String key, String x, String id, String info) {
+        String response = "";
         if (verificadorKey(key)) {
             String username = "";
             int iD = Integer.parseInt(id) - 1;
@@ -222,37 +255,39 @@ public class Facade {
                     case "1":
                         oferta = new DescripcionOferta(oferta, info);
                         dataOfertas.set(iD, oferta);
-                        System.out.println("Se ha añadido la propiedad correctamente");
+                        response = "Se ha añadido la propiedad correctamente";
                         break;
                     case "2":
                         oferta = new TipoContratoOferta(oferta, info);
                         dataOfertas.set(iD, oferta);
-                        System.out.println("Se ha añadido la propiedad correctamente");
+                        response = "Se ha añadido la propiedad correctamente";
                         break;
                     case "3":
                         oferta = new TiempoOferta(oferta, info);
                         dataOfertas.set(iD, oferta);
-                        System.out.println("Se ha añadido la propiedad correctamente");
+                        response = "Se ha añadido la propiedad correctamente";
                         break;
                     case "4":
                         oferta = new SueldoMensualOferta(oferta, info);
                         dataOfertas.set(iD, oferta);
-                        System.out.println("Se ha añadido la propiedad correctamente");
+                        response = "Se ha añadido la propiedad correctamente";
                         break;
                     default:
-                        System.out.println("Escoja una eleccion valida");
+                        response = "Escoja una eleccion valida";
                         break;
 
                     }
                 }
             }
         } else {
-            System.out.println("La sesion no existe, ah caducado.");
+            response = "La sesion no existe, ah caducado.";
         }
+        return response;
     }
     // Guardar ofertas/empresas
 
-    private void addEmpresa(String key, String nEmpresa1, String nEmpresa2) {
+    private String addEmpresa(String key, String nEmpresa1, String nEmpresa2) {
+        String response = "";
         if (verificadorKey(key)) {
             // Encontrar Username
             String username = "";
@@ -286,21 +321,22 @@ public class Facade {
                 }
                 if (empresa1 != null && empresa2 != null) {
                     empresa1.addEmpresa(empresa2);
-                    System.out.println("Se ha añadido la empresa correctamente");
+                    response = "Se ha añadido la empresa correctamente";
                 } else {
-                    System.out.println("La informacion de las empresas que ha ingresado no se encuentra registrada. Intente nuevamente");
+                    response = "La informacion de las empresas que ha ingresado no se encuentra registrada. Intente nuevamente";
                 }
             } else {
-                System.out.println("El usuario no esta registrado en el sistema");
+                response = "El usuario no esta registrado en el sistema";
             }
 
         } else {
-            System.out.println("La sesion no existe, ah caducado.");
+            response = "La sesion no existe, ah caducado.";
         }
-
+        return response;
     }
 
-    private void addOferta(String key, String nEmpresa1, String id) {
+    private String addOferta(String key, String nEmpresa1, String id) {
+        String response = "";
         if (verificadorKey(key)) {
             // Encontrar Username
             String username = "";
@@ -334,21 +370,22 @@ public class Facade {
                 }
                 if (empresa1 != null && oferta1 != null) {
                     empresa1.addOfertaLaboral(oferta1);
-                    System.out.println("Se ha añadido la oferta correctamente");
+                    response = "Se ha añadido la oferta correctamente";
                 } else {
-                    System.out.println(
-                            "La informacion de las empresas que ha ingresado no se encuentra registrada. Intente nuevamente");
+                    response = "La informacion de las empresas que ha ingresado no se encuentra registrada. Intente nuevamente";
                 }
             } else {
-                System.out.println("El usuario no esta registrado en el sistema");
+                response = "El usuario no esta registrado en el sistema";
             }
         } else {
-            System.out.println("La sesion no existe, ah caducado.");
+            response = "La sesion no existe, ah caducado.";
         }
+        return response;
     }
 
     // Imprimir Oferta
-    private void imprimirOferta(String key, String nEmpresa) {
+    private String imprimirOferta(String key, String nEmpresa) {
+        String response = "";
         if (verificadorKey(key)) {
             // Encontrar Username
             String username = "";
@@ -372,15 +409,16 @@ public class Facade {
                     }
                 }
                 if (empresa1 != null) {
-                    System.out.println(empresa1.imprimirOferta());
+                    response = empresa1.imprimirOferta();
                 } else {
-                    System.out.println("La empresa no se encuentra registrada.");
+                    response = "La empresa no se encuentra registrada.";
                 }
             } else {
-                System.out.println("El usuario no esta registrado en el sistema");
+                response = "El usuario no esta registrado en el sistema";
             }
         } else {
-            System.out.println("La sesion no existe, ah caducado.");
+            response = "La sesion no existe, ah caducado.";
         }
+        return response;
     }
 }
