@@ -14,6 +14,7 @@ import com.canessa.maven.test.oferta.TipoContratoOferta;
 import com.canessa.maven.test.proxy.AESEncript;
 
 public class Facade {
+
     // Variables Globales
     private static Facade instance;
     private ArrayList<Usuario> dataUsers;
@@ -45,41 +46,43 @@ public class Facade {
     // Metodo Main/Separador/Add data Users
 
     public void action(String data) {
+
         System.out.println(data);
         String dataUncripted = AESEncript.decrypt(data);
         System.out.println(dataUncripted);
         String[] separatedData = separator(dataUncripted);
+
         switch (separatedData[0]) {
-        case "1": // Crear Usuario
-            this.createUser(separatedData[1], separatedData[2], separatedData[3]);
-            break;
-        case "2": // LogOut
-            this.logOut(separatedData[1]);
-            break;
-        case "3": // Crear Empresa
-            this.createEmpresa(separatedData[1], separatedData[2], separatedData[3], separatedData[4]);
-            break;
-        case "4": // Crear Oferta Base
-            this.createOfertaBase(separatedData[1]);
-            break;
-        case "5": // Crear Oferta Completa
-            this.createOferta(separatedData[1], separatedData[2], separatedData[3], separatedData[4], separatedData[5]);
-            break;
-        case "6": // Añadir Propiedad a Oferta
-            this.addPropiedadOferta(separatedData[1], separatedData[2], separatedData[3], separatedData[4]);
-            break;
-        case "7": // Añadir Empresa
-            this.addEmpresa(separatedData[1], separatedData[2], separatedData[3]);
-            break;
-        case "8": // Añadir Oferta
-            this.addOferta(separatedData[1], separatedData[2], separatedData[3]);
-        break;
-        case "9": // Imprimir Componente
-        this.imprimirOferta(separatedData[1], separatedData[2]);
-            break;
-        default:
-            System.out.println("Opcion Incorrecta");
-            break;
+            case "1": // Crear Usuario
+                this.createUser(separatedData[1], separatedData[2], separatedData[3]);
+                break;
+            case "2": // LogOut
+                this.logOut(separatedData[1]);
+                break;
+            case "3": // Crear Empresa
+                this.createEmpresa(separatedData[1], separatedData[2], separatedData[3], separatedData[4]);
+                break;
+            case "4": // Crear Oferta Base
+                this.createOfertaBase(separatedData[1]);
+                break;
+            case "5": // Crear Oferta Completa
+                this.createOferta(separatedData[1], separatedData[2], separatedData[3], separatedData[4], separatedData[5]);
+                break;
+            case "6": // Añadir Propiedad a Oferta
+                this.addPropiedadOferta(separatedData[1], separatedData[2], separatedData[3], separatedData[4]);
+                break;
+            case "7": // Añadir Empresa
+                this.addEmpresa(separatedData[1], separatedData[2], separatedData[3]);
+                break;
+            case "8": // Añadir Oferta
+                this.addOferta(separatedData[1], separatedData[2], separatedData[3]);
+                break;
+            case "9": // Imprimir Componente
+                this.imprimirOferta(separatedData[1], separatedData[2]);
+                break;
+            default:
+                System.out.println("Opcion Incorrecta");
+                break;
         }
     }
 
@@ -91,6 +94,7 @@ public class Facade {
 
     private boolean verificadorKey(String key) {
         boolean existe = false;
+
         for (String localKey : dataKeys) {
             String localKeySinAES = AESEncript.decrypt(localKey);
             if (localKeySinAES.equals(key)) {
@@ -105,29 +109,31 @@ public class Facade {
     public void login(Usuario user, String key) {
         dataUsers.add(user);
         dataKeys.add(AESEncript.encrypt(key));
-        String uData =AESEncript.encrypt(user.getUsername() + "/" + key);
+        String uData = AESEncript.encrypt(user.getUsername() + "/" + key);
+        String uncrData = AESEncript.decrypt(uData);
+
         relacionador.add(uData);
+        System.out.println("SOY EL TIPO DE USUARI: " + verificadorAdmin(key) + "          " + uncrData);
     }
 
-    private void logOut(String key){
+    private void logOut(String key) {
         if (verificadorKey(key)) {
-            
+
         }
     }
 
     // Metodos Create
-
     public Usuario createUser(String x, String user, String password) {
         switch (x) {
-        case "1":
-            // Crear Empresa
-            return new Admin(user, password);
-        case "2":
-            // Crear Aspirante
-            return new Aspirante(user, password);
-        default:
-            System.out.println("Ingrese una opcion valida");
-            return null;
+            case "1":
+                // Crear Empresa
+                return new Admin(user, password);
+            case "2":
+                // Crear Aspirante
+                return new Aspirante(user, password);
+            default:
+                System.out.println("Ingrese una opcion valida");
+                return null;
         }
     }
 
@@ -196,15 +202,30 @@ public class Facade {
         }
     }
 
-    private void getTipoUsuario(Usuario u) {
+   
+
+    private boolean verificadorAdmin(String key) {
+        boolean sas = false;
+
+        if (verificadorKey(key) && relacionador.contains(AESEncript.encrypt(key))) {
+            for (String datos : relacionador) {
+                String[] data = separator(AESEncript.decrypt(datos));
+                if(data[1].equals(key)){
+                     relacionador.set(datos,relacionador.get(AESEncript.decrypt(datos)));
+               }
+            }
+        }
+        return sas;
+    }
+     private void getTipoUsuario(Usuario u) {
         System.out.println(u.getTipoUsuario());
     }
 
     // Metodos CRUD Ofertas
-
     private void addPropiedadOferta(String key, String x, String id, String info) {
         if (verificadorKey(key)) {
             String username = "";
+
             int iD = Integer.parseInt(id) - 1;
             for (String relacion : relacionador) {
                 String[] data = separator(AESEncript.decrypt(relacion));
@@ -219,29 +240,29 @@ public class Facade {
                 if (data[0].equals(username) && data[1].equals(id)) {
                     Componente oferta = dataOfertas.get(iD);
                     switch (x) {
-                    case "1":
-                        oferta = new DescripcionOferta(oferta, info);
-                        dataOfertas.set(iD, oferta);
-                        System.out.println("Se ha añadido la propiedad correctamente");
-                        break;
-                    case "2":
-                        oferta = new TipoContratoOferta(oferta, info);
-                        dataOfertas.set(iD, oferta);
-                        System.out.println("Se ha añadido la propiedad correctamente");
-                        break;
-                    case "3":
-                        oferta = new TiempoOferta(oferta, info);
-                        dataOfertas.set(iD, oferta);
-                        System.out.println("Se ha añadido la propiedad correctamente");
-                        break;
-                    case "4":
-                        oferta = new SueldoMensualOferta(oferta, info);
-                        dataOfertas.set(iD, oferta);
-                        System.out.println("Se ha añadido la propiedad correctamente");
-                        break;
-                    default:
-                        System.out.println("Escoja una eleccion valida");
-                        break;
+                        case "1":
+                            oferta = new DescripcionOferta(oferta, info);
+                            dataOfertas.set(iD, oferta);
+                            System.out.println("Se ha añadido la propiedad correctamente");
+                            break;
+                        case "2":
+                            oferta = new TipoContratoOferta(oferta, info);
+                            dataOfertas.set(iD, oferta);
+                            System.out.println("Se ha añadido la propiedad correctamente");
+                            break;
+                        case "3":
+                            oferta = new TiempoOferta(oferta, info);
+                            dataOfertas.set(iD, oferta);
+                            System.out.println("Se ha añadido la propiedad correctamente");
+                            break;
+                        case "4":
+                            oferta = new SueldoMensualOferta(oferta, info);
+                            dataOfertas.set(iD, oferta);
+                            System.out.println("Se ha añadido la propiedad correctamente");
+                            break;
+                        default:
+                            System.out.println("Escoja una eleccion valida");
+                            break;
 
                     }
                 }

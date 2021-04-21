@@ -18,7 +18,7 @@ public class Aspirante extends Usuario {
 
 //Getters
     public String getTipoUsuario(){
-        return "Tipo: Aspirante";
+        return "Tipo: "+getClass().getSimpleName();
     }
     
 }

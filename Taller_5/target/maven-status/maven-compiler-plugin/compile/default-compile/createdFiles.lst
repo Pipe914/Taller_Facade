@@ -1,0 +1,16 @@
+com\canessa\maven\test\oferta\DescripcionOferta.class
+com\canessa\maven\test\cuentas\Aspirante.class
+com\canessa\maven\test\oferta\TipoContratoOferta.class
+com\canessa\maven\test\oferta\ModificadorOferta.class
+com\canessa\maven\test\proxy\ILogin.class
+com\canessa\maven\test\cuentas\Admin.class
+com\canessa\maven\test\Usuario.class
+com\canessa\maven\test\Facade.class
+com\canessa\maven\test\oferta\OfertaBase.class
+com\canessa\maven\test\Componente.class
+com\canessa\maven\test\proxy\Login.class
+com\canessa\maven\test\Empresa\Empresa.class
+com\canessa\maven\test\oferta\SueldoMensualOferta.class
+com\canessa\maven\test\proxy\AESEncript.class
+com\canessa\maven\test\Main.class
+com\canessa\maven\test\oferta\TiempoOferta.class
