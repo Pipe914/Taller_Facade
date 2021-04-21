@@ -13,7 +13,7 @@ public class Main {
         Usuario aspirante = controlador.createUser("2", "Andres", "1234");
         // Verificacion Login
         String key1 = proxy.verifyLogin(admin, "Sabana", "1234");
-        //String key2 = proxy.verifyLogin(aspirante, "Andres", "1234");
+        String key2 = proxy.verifyLogin(aspirante, "Andres", "1234");
 
         // Prueba LogOut
         //System.out.println(AESEncript.decrypt(controlador.action(AESEncript.encrypt("2/" + key1))));
@@ -37,7 +37,6 @@ public class Main {
     
 }
 
-// Encriptado de key y llamados
 // Verificar funciones a las que es posible acceder cada usuario
 // Implementar Fly
 /*  1. Terminar DIseño (UML) V-E
