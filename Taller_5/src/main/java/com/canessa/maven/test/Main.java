@@ -37,7 +37,6 @@ public class Main {
     
 }
 
-// Verificar funciones a las que es posible acceder cada usuario
 // Implementar Fly
 /*  1. Terminar DIseño (UML) V-E
     2. Terminanr funcionalidad completa y presentar funcionalidad
