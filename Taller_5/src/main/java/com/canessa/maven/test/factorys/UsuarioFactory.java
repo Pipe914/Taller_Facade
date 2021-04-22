@@ -7,12 +7,12 @@ import com.canessa.maven.test.Usuario;
 public class UsuarioFactory{
     private HashMap listUsuario = new HashMap();
 
-    public void saveUsuario(String key, Usuario user)
+    public void saveUsuario(String username, Usuario user)
     {
-        listUsuario.put(key, user);
+        listUsuario.put(username, user);
 
     }
-    public Usuario getUsuario(String key){
-        return (Usuario)listUsuario.get(key); 
+    public Usuario getUsuario(String username){
+        return (Usuario)listUsuario.get(username); 
     }
 }
