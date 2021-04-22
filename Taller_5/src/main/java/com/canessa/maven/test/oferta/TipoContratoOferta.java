@@ -2,15 +2,18 @@ package com.canessa.maven.test.oferta;
 
 import com.canessa.maven.test.Componente;
 
+// Clase propiedad oferta: Descripcion
 public class TipoContratoOferta extends ModificadorOferta{
-
+// Variables globales
     private String tipoContrato;
 
+// Constructor
     public TipoContratoOferta(Componente nuevaOferta, String tipoContrato) {
         super(nuevaOferta);
         this.tipoContrato = tipoContrato;
     }
 
+// Metodos de clase
     public String imprimirOferta(){
         return nuevaOferta.imprimirOferta() + addTipoContrato();
     }

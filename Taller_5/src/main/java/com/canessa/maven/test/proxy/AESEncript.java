@@ -10,11 +10,14 @@ import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
+// CLase de encriptamiento mediante AES
 public class AESEncript {
+// Variables  Globales
+    private static final String secret_key = "Asjnejsjew";
+    private static final String saltalt = "anwbrnsbfa,bbr";
 
-    private static final String secret_key = "HolaMuyBuenas";
-    private static final String saltalt = "Buenas";
-
+// Metodos de Clase
+    // Metodo de enccriptamiento
     public static String encrypt(String strToEncrypt) {
 
         try {
@@ -36,6 +39,7 @@ public class AESEncript {
         return null;
     }
 
+    // Metodo de desenccriptamiento
     public static String decrypt(String strToDecrypt) {
         try {
             byte[] iv = new byte[16];

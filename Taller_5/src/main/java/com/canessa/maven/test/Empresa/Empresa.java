@@ -4,13 +4,15 @@ import java.util.ArrayList;
 
 import com.canessa.maven.test.Componente;
 
+// Clase empresa, implementa interfaz Componente
 public class Empresa implements Componente {
+// Variables globales de datos de empresa y contenedores
     private String nit;
     private String nombre;
     private String direccion;
     private ArrayList<Componente> ofertasLaborales;
     private ArrayList<Componente> empresas;
-
+// Constructor
     public Empresa(String n, String nom, String dir) {
         nit = n;
         nombre = nom;
@@ -18,8 +20,8 @@ public class Empresa implements Componente {
         ofertasLaborales = new ArrayList<Componente>();
         empresas = new ArrayList<Componente>();
     }
-// Metodos Clase
 
+// Metodos Clase
     public String imprimirOferta() {
 
         String data = "";
@@ -59,7 +61,7 @@ public class Empresa implements Componente {
         this.empresas.add(empresa);
     }
 
-    // Setters
+// Setters
     public void setNit(String nit) {
         this.nit = nit;
     }
@@ -80,7 +82,7 @@ public class Empresa implements Componente {
         this.empresas = empresa;
     }
 
-    // Getters
+// Getters
     public String getNit() {
         return this.nit;
     }
