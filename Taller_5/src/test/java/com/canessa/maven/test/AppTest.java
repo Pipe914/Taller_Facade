@@ -1,4 +1,4 @@
-package com.canessa.maven.test;
+package com.canessa.maven.test; 
 
 import static org.junit.Assert.assertTrue;
 
