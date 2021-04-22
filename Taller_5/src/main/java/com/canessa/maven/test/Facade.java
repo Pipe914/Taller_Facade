@@ -1,6 +1,9 @@
 package com.canessa.maven.test;
 
 import com.canessa.maven.test.cuentas.Aspirante;
+import com.canessa.maven.test.factorys.EmpresaFactory;
+import com.canessa.maven.test.factorys.OfertaFactory;
+import com.canessa.maven.test.factorys.UsuarioFactory;
 
 import java.util.ArrayList;
 
@@ -17,10 +20,10 @@ public class Facade {
 
     // Variables Globales
     private static Facade instance;
-    private ArrayList<Usuario> dataUsers;
+    private UsuarioFactory dataUsers;
+    private EmpresaFactory dataEmpresas;
+    private OfertaFactory dataOfertas;
     private ArrayList<String> dataKeys;
-    private ArrayList<Empresa> dataEmpresas;
-    private ArrayList<Componente> dataOfertas;
     private ArrayList<String> relacionador;
 
     // Singlenton
@@ -37,10 +40,10 @@ public class Facade {
 
     // Constructors
     private Facade() {
-        dataUsers = new ArrayList<Usuario>();
+        dataUsers = new UsuarioFactory();
+        dataEmpresas = new EmpresaFactory();
+        dataOfertas = new OfertaFactory();
         dataKeys = new ArrayList<String>();
-        dataEmpresas = new ArrayList<Empresa>();
-        dataOfertas = new ArrayList<Componente>();
         relacionador = new ArrayList<String>();
     }
     // Metodo Main/Separador/Add data Users
@@ -98,7 +101,6 @@ public class Facade {
     }
 
     private boolean veriTipoUsuario(String key, String type) {
-        String tipo = "";
         String username = "";
         boolean response = false;
 
@@ -110,21 +112,16 @@ public class Facade {
             }
         }
         if (!username.equals("")) {
-            for (Usuario user : dataUsers) {
-                if (user.getUsername().equals(username)) {
-                    tipo = user.getTipoUsuario();
-                    break;
-                }
-            }
-            if (!tipo.equals("")) {
+            Usuario u = dataUsers.getUsuario(username);
+            if (u != null) {
                 switch (type) {
                 case "1":
-                    if (tipo.equals("Tipo: Admin")) {
+                    if (u.getTipoUsuario().equals("Tipo: Admin")) {
                         response = true;
                     }
                     break;
                 case "2":
-                    if (tipo.equals("Tipo: Aspirante")) {
+                    if (u.getTipoUsuario().equals("Tipo: Aspirante")) {
                         response = true;
                     }
                     break;
@@ -138,7 +135,7 @@ public class Facade {
 
     // Metodos Logins
     public void login(Usuario user, String key) {
-        dataUsers.add(user);
+        dataUsers.saveUsuario(user.getUsername(), user);
         dataKeys.add(AESEncript.encrypt(key));
         String uData = AESEncript.encrypt(user.getUsername() + "/" + key);
         relacionador.add(uData);
@@ -208,8 +205,6 @@ public class Facade {
         if (verificadorKey(key)) {
             if (veriTipoUsuario(key, "1")) {
                 String username = "";
-                Empresa empresa = new Empresa(nit, nombre, direccion);
-                dataEmpresas.add(empresa);
                 for (String relacion : relacionador) {
                     String[] data = separator(AESEncript.decrypt(relacion));
                     if (data[1].equals(key)) {
@@ -217,8 +212,11 @@ public class Facade {
                         break;
                     }
                 }
-                String uData = username + "/" + nit;
-                relacionador.add(AESEncript.encrypt(uData));
+                Usuario user = dataUsers.getUsuario(username);
+                Empresa empresa = new Empresa(nit, nombre, direccion);
+                dataEmpresas.saveEmpresa(user, empresa);
+                Empresa emp = dataEmpresas.getEmpresa(user);
+                System.out.println(emp.imprimirOferta());
                 response = "La empresa se ha creado exitosamente";
             }else{
                 response = "Usted no tiene acceso para realizar esta acción!!!";
