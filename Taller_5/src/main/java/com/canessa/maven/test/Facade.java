@@ -411,7 +411,7 @@ public class Facade {
         String response = "";
         if (verificadorKey(key)) {
             if(veriTipoUsuario(key, "1")){
-                // Encontrar Username
+                // Encontgitrar Username
                 String username = "";
                 Empresa empresa1 = null;
                 Componente oferta1 = null;
