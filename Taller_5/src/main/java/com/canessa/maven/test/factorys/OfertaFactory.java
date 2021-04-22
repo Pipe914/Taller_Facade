@@ -7,10 +7,13 @@ import com.canessa.maven.test.Componente;
 public class OfertaFactory {
     private HashMap list = new HashMap();
 
-    public void saveEmpresa(int index, Componente oferta) {
-        list.put(index, oferta);
+    public void saveOferta(String id, Componente oferta) {
+        list.put(id, oferta);
     }
-    public Componente getEmpresa(int index){
-        return (Componente) list.get(index);
+    public Componente getOferta(String id){
+        return (Componente) list.get(id);
+    }
+    public int getSize(){
+        return list.size();
     }
 }
