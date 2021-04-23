@@ -2,7 +2,7 @@ package com.canessa.maven.test.oferta;
 
 import com.canessa.maven.test.Componente;
 
-// Clase propiedad oferta: Descripcion
+// Clase propiedad oferta: Tipo Contrato
 public class TipoContratoOferta extends ModificadorOferta{
 // Variables globales
     private String tipoContrato;
@@ -17,12 +17,10 @@ public class TipoContratoOferta extends ModificadorOferta{
     public String imprimirOferta(){
         return nuevaOferta.imprimirOferta() + addTipoContrato();
     }
-
     private String addTipoContrato(){
         return "El tipo de contrato es: " + this.tipoContrato + "\n";
     }
     public String optionalGetId(){
         return nuevaOferta.optionalGetId();
     }
-    
 }

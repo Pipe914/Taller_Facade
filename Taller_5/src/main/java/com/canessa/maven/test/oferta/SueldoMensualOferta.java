@@ -2,7 +2,7 @@ package com.canessa.maven.test.oferta;
 
 import com.canessa.maven.test.Componente;
 
-// Clase propiedad oferta: Descripcion
+// Clase propiedad oferta: Sueldo Oferta
 public class SueldoMensualOferta extends ModificadorOferta{
 // Variables globales
     private String sueldo;
@@ -17,7 +17,6 @@ public class SueldoMensualOferta extends ModificadorOferta{
     public String imprimirOferta(){
         return nuevaOferta.imprimirOferta() + addSueldo();
     }
-
     private String addSueldo(){
         return "El sueldo mensual del contrato es: " + this.sueldo + "\n";
     }

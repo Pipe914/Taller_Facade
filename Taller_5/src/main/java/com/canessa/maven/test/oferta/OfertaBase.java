@@ -22,7 +22,7 @@ public class OfertaBase implements Componente{
     }
     @Override
     public String imprimirOferta() {
-        return "La oferta laboral consta de:\n ";
+        return "La oferta laboral consta de:\n";
     }
     public String optionalGetId(){
         return getId();

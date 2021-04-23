@@ -47,8 +47,8 @@ public class Facade {
         dataKeys = new ArrayList<String>();
         relacionador = new RelacionadorFactory();
     }
-    // Metodo Main: Único metodo que se comunica con FrontEnd
 
+// Metodo Main: Único metodo que se comunica con FrontEnd
     public String action(String data) {
         String dataUncripted = AESEncript.decrypt(data);
         String[] separatedData = separator(dataUncripted);
@@ -146,7 +146,7 @@ public class Facade {
     private boolean existeData(String[] data, String search) {
         // Crea la variable de verificacion
         boolean response = false;
-        // Verifica que la informacion recivida no este vacia.
+        // Verifica que la informacion recibida no este vacia.
         if (data != null) {
             // Recorre el array de informacion buscando una coincidencia con el item a
             // buscar.
@@ -190,7 +190,7 @@ public class Facade {
         return response;
     }
 
-    // Metodos Create
+// Metodos Create
     // Metodo de creacion de usuario (se puede mover a proxy)
     public Usuario createUser(String x, String user, String password) {
         // Recibe la informacion para la creacion del usuario (username y password), y
@@ -240,7 +240,7 @@ public class Facade {
                 response = "Usted no tiene acceso para realizar esta acción!!!";
             }
         } else {
-            response = "La sesion no existe, ah caducado.";
+            response = "La sesion no existe, ha caducado.";
         }
         // Se retorna el resultado de la operacion
         return response;
@@ -274,13 +274,13 @@ public class Facade {
                     // En el caso de que no sea la primera oferta creada
                     relacionador.saveUsuarioOferta(username, (relacionador.getUsuarioOferta(username) + id + "/"));
                 }
-                response = "La oferta base, ah sido creada correctamente. El ID de la oferta es: "
+                response = "La oferta base, ha sido creada correctamente. El ID de la oferta es: "
                         + oferta.optionalGetId();
             } else {
                 response = "Usted no tiene acceso para realizar esta acción!!!";
             }
         } else {
-            response = "La sesion no existe, ah caducado.";
+            response = "La sesion no existe, ha caducado.";
         }
         // Se retorna el resultado de la operacion
         return response;
@@ -320,19 +320,19 @@ public class Facade {
                     // En el caso de que no sea la primera oferta creada
                     relacionador.saveUsuarioOferta(username, (relacionador.getUsuarioOferta(username) + id + "/"));
                 }
-                response = "La oferta base, ah sido creada correctamente. El ID de la oferta es: "
+                response = "La oferta completa, ha sido creada correctamente. El ID de la oferta es: "
                         + oferta.optionalGetId();
             } else {
                 response = "Usted no tiene acceso para realizar esta acción!!!";
             }
         } else {
-            response = "La sesion no existe, ah caducado.";
+            response = "La sesion no existe, ha caducado.";
         }
         // Se retorna el resultado de la operacion
         return response;
     }
 
-    // Metodos de edicion de ofertas
+// Metodos de edicion de ofertas
     // Metodo de adicion de propiedad de oferta
     private String addPropiedadOferta(String key, String x, String id, String info) {
         // Se recibe la key del usuario, el caso a añadir, le id de la oferta a
@@ -386,13 +386,13 @@ public class Facade {
                 response = "Usted no tiene acceso para realizar esta acción!!!";
             }
         } else {
-            response = "La sesion no existe, ah caducado.";
+            response = "La sesion no existe, ha caducado.";
         }
         // Se retorna el resultado de la operacion
         return response;
     }
 
-    // Metodos de guardado de componentes
+// Metodos de guardado de componentes
     // Metodo de guardado de empresa dentro de empresa
     private String addEmpresa(String key, String nEmpresa1, String nEmpresa2) {
         // Se recibe la key del usuario y los nit de las empresas, se crea la variable
@@ -427,7 +427,7 @@ public class Facade {
                 response = "Usted no tiene acceso para realizar esta acción!!!";
             }
         } else {
-            response = "La sesion no existe, ah caducado.";
+            response = "La sesion no existe, ha caducado.";
         }
         // Se retorna el resultado de la operacion
         return response;
@@ -467,7 +467,7 @@ public class Facade {
                 response = "Usted no tiene acceso para realizar esta acción!!!";
             }
         } else {
-            response = "La sesion no existe, ah caducado.";
+            response = "La sesion no existe, ha caducado.";
         }
         // Se retorna el resultado de la operacion
         return response;
@@ -490,7 +490,7 @@ public class Facade {
                 response = "La empresa no se encuentra registrada.";
             }
         } else {
-            response = "La sesion no existe, ah caducado.";
+            response = "La sesion no existe, ha caducado.";
         }
         // Se retorna el resultado de la operacion
         return response;

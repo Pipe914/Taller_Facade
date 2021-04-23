@@ -14,7 +14,7 @@ import java.util.Base64;
 public class AESEncript {
 // Variables  Globales
     private static final String secret_key = "Asjnejsjew";
-    private static final String saltalt = "anwbrnsbfa,bbr";
+    private static final String saltalt = "anwbrnsbfabbr";
 
 // Metodos de Clase
     // Metodo de enccriptamiento

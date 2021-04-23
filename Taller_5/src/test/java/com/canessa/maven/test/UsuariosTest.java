@@ -1,7 +1,8 @@
 package com.canessa.maven.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+//import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.canessa.maven.test.cuentas.Admin;
 import com.canessa.maven.test.cuentas.Aspirante;
@@ -16,17 +17,14 @@ public class UsuariosTest
     /**
      * Rigorous Test :-)
      */
-
     //Objetos a usar
     Usuario aspirante = new Aspirante("Andres", "1234");
     Usuario admin =  new Admin("Sabana", "1234");
 
     @Test
     public void testCreaAspirante(){
-        String nombre = aspirante.getUsername();
-        String password = aspirante.getPassword();
-        assertEquals(nombre,"Andres");
-        assertEquals(password, "1234");
+        assertEquals(aspirante.getUsername(),"Andres");
+        assertEquals(aspirante.getPassword(), "1234");
     }
 
     @Test
@@ -42,13 +40,13 @@ public class UsuariosTest
     @Test
     public void testSetUsernameAspirante(){
         aspirante.setUsername("Juan");
-        assertNotEquals("Andres", "Juan");
+        assertEquals(aspirante.getUsername(), "Juan");
     }
 
     @Test 
     public void testSetPasswordAspirante(){
         aspirante.setPassword("123");
-        assertNotEquals("1234", "1233");
+        assertEquals(aspirante.getPassword(), "123");
     }
 
     @Test 
@@ -58,16 +56,13 @@ public class UsuariosTest
 
     @Test
     public void testLoginAspirante(){
-        String respuesta = aspirante.login("Andres", "1234");
-        assertEquals(respuesta, "Ha ingresado correctamente al sistema. Aspirante: " + aspirante.getUsername());
+        assertEquals(aspirante.login("Andres", "1234"), "Ha ingresado correctamente al sistema. Aspirante: " + aspirante.getUsername());
     }
 
     @Test
     public void testCreaAdmin(){
-        String nombre = admin.getUsername();
-        String password = admin.getPassword();
-        assertEquals(nombre,"Sabana");
-        assertEquals(password, "1234");
+        assertEquals(admin.getUsername(),"Sabana");
+        assertEquals(admin.getPassword(), "1234");
     }
 
     @Test
@@ -83,24 +78,23 @@ public class UsuariosTest
     @Test
     public void testSetUsernameAdmin(){
         admin.setUsername("Andes");
-        assertNotEquals("Sabana", "Andes");
+        assertEquals(admin.getUsername(), "Andes");
     }
 
     @Test 
     public void testSetPasswordAdmin(){
         admin.setPassword("123");
-        assertNotEquals("1234", "1233");
+        assertEquals(admin.getPassword(), "123");
     }
 
     @Test 
     public void testGetTipoUsuarioAdmin(){
-        assertEquals(admin.getTipoUsuario(), "Tipo: Empresa");
+        assertEquals(admin.getTipoUsuario(),"Tipo: Admin");
         
     }
 
     @Test
     public void testLoginAdmin(){
-        String respuesta = admin.login("Sabana", "1234");
-        assertEquals(respuesta, "Ha ingresado correctamente al sistema. Empresa: " + admin.getUsername());
+        assertEquals(admin.login("Sabana", "1234"), "Ha ingresado correctamente al sistema. Empresa: " + admin.getUsername());
     }
 }
