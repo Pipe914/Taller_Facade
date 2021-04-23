@@ -2,12 +2,14 @@ package com.canessa.maven.test.cuentas;
 
 import com.canessa.maven.test.Usuario;
 
+// Clase Aspirante, implementa clase padre Usuario 
 public class Aspirante extends Usuario {
+// Constructor
     public Aspirante(String user, String pass){
         super(user, pass);
     };
-//Metodos de Clase
 
+//Metodos de Clase
     public String login(String user, String contra){
         if (username.equals(user) && password.equals(contra)){
             return ("Ha ingresado correctamente al sistema. Aspirante: " + user);
@@ -16,9 +18,8 @@ public class Aspirante extends Usuario {
         }
     }
 
-//Getters
     public String getTipoUsuario(){
-        return "Tipo: Aspirante";
+        return "Tipo: "+getClass().getSimpleName();
     }
     
 }

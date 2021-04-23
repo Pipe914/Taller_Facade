@@ -2,13 +2,14 @@ package com.canessa.maven.test.cuentas;
 
 import com.canessa.maven.test.Usuario;
 
+// Clase Admin, implementa clase padre Usuario 
 public class Admin extends Usuario {
-
+//Constructor
     public Admin(String user, String pass) {
         super(user, pass);
     }
-// Metodos Clase
 
+// Metodos Clase
     public String login(String user, String contra){
         if (username.equals(user) && password.equals(contra)){
             return("Ha ingresado correctamente al sistema. Empresa: " + user);
@@ -18,7 +19,7 @@ public class Admin extends Usuario {
     }
 
     public String getTipoUsuario(){
-        return ("Tipo: Empresa");
+        return ("Tipo: "+ getClass().getSimpleName());
     }
     
 }

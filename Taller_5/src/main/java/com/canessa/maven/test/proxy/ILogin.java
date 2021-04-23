@@ -1,6 +1,10 @@
 package com.canessa.maven.test.proxy;
 
+import com.canessa.maven.test.Usuario;
+
+// Interfaz para metodos proxy
 public interface ILogin {
-    public void verifyLogin();
-    public void createKey();
+    // Metodo de verificacion de login
+    public String verifyLogin(Usuario user, String username, String password);
+    
 }
