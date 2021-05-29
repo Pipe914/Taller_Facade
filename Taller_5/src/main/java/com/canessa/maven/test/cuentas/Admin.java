@@ -21,5 +21,5 @@ public class Admin extends Usuario {
     public String getTipoUsuario(){
         return ("Tipo: "+ getClass().getSimpleName());
     }
-    
+
 }

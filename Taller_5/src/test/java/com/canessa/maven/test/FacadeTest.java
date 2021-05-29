@@ -79,7 +79,8 @@ public class FacadeTest
 
     @Test
     public void testCrearOfertaCompletaNoAcceso(){
-        assertEquals("Usted no tiene acceso para realizar esta acción!!!", AESEncript.decrypt(controlador.action(AESEncript.encrypt("5/"+key2+"/Trabajo/Servicios/Indefinido/500000"))));
+        assertEquals("Usted no tiene acceso para realizar esta acción!!!", 
+        AESEncript.decrypt(controlador.action(AESEncript.encrypt("5/"+key2+"/Trabajo/Servicios/Indefinido/500000"))));
     }
 
     @Test
@@ -103,7 +104,8 @@ public class FacadeTest
 
     @Test 
     public void testAddPropiedadOfertaNoAcceso(){
-        assertEquals("Usted no tiene acceso para realizar esta acción!!!",AESEncript.decrypt(controlador.action(AESEncript.encrypt("6/"+key2+"/1/1/Muchas cosas wuu!!"))));
+        assertEquals("Usted no tiene acceso para realizar esta acción!!!",
+        AESEncript.decrypt(controlador.action(AESEncript.encrypt("6/"+key2+"/1/1/Muchas cosas wuu!!"))));
     }
 
     @Test
@@ -185,14 +187,5 @@ public class FacadeTest
     public void testImprimirOfertaNoExisteSesion(){
         assertNotEquals("La sesion no existe, ha caducado.",  AESEncript.decrypt(controlador.action(AESEncript.encrypt("9/"+key1+"/123524"))));
     }
-
-
-
-
-
-
-
-
-
 
 }

@@ -13,7 +13,7 @@ public class Main {
         Usuario admin = controlador.createUser("1", "Sabana", "1234");
         Usuario aspirante = controlador.createUser("2", "Andres", "1234");
         Usuario aspirante2 = controlador.createUser("2", "Daniel", "7895");
-        
+
         // Login
         String key1 = proxy.verifyLogin(admin, "Sabana", "1234");
         String key2 = proxy.verifyLogin(aspirante, "Andres", "1234");

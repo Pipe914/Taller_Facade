@@ -19,7 +19,7 @@ public class UsuariosTest
      */
     //Objetos a usar
     Usuario aspirante = new Aspirante("Andres", "1234");
-    Usuario admin =  new Admin("Sabana", "1234");
+    Admin admin =  new Admin("Sabana", "1234");
 
     @Test
     public void testCreaAspirante(){
